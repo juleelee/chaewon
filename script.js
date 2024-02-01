@@ -1,105 +1,18 @@
-const {
-    gsap: { registerPlugin, set, to, timeline },
-    MorphSVGPlugin,
-    Draggable } =
-  window;
-  registerPlugin(MorphSVGPlugin);
-  
-  // Used to calculate distance of "tug"
-  let startX;
-  let startY;
-  
-  const AUDIO = {
-    CLICK: new Audio('/lily.mp3') };
-  
-  const STATE = {
-    ON: false };
-  
-  const CORD_DURATION = 0.1;
-  
-  const CORDS = document.querySelectorAll('.toggle-scene__cord');
-  const HIT = document.querySelector('.toggle-scene__hit-spot');
-  const DUMMY = document.querySelector('.toggle-scene__dummy-cord');
-  const DUMMY_CORD = document.querySelector('.toggle-scene__dummy-cord line');
-  const PROXY = document.createElement('div');
-  // set init position
-  const ENDX = DUMMY_CORD.getAttribute('x2');
-  const ENDY = DUMMY_CORD.getAttribute('y2');
-  const RESET = () => {
-    set(PROXY, {
-      x: ENDX,
-      y: ENDY });
-  
-  };
-  
-  RESET();
-  
-  const CORD_TL = timeline({
-    paused: true,
-    onStart: () => {
-      if (STATE.ON) {
-        // Si l'audio est allumé, éteindre
-        AUDIO.CLICK.muted = true;
-      } else {
-        // Si l'audio est éteint, allumer
-        AUDIO.CLICK.muted = false;
-        AUDIO.CLICK.play();
-        
-      }
-      STATE.ON = !STATE.ON;
-      set(document.documentElement, { '--on': STATE.ON ? 1 : 0 });
-      set([DUMMY, HIT], { display: 'none' });
-      set(CORDS[0], { display: 'block' });
-      
-    },
-    onComplete: () => {
-      set([DUMMY, HIT], { display: 'block' });
-      set(CORDS[0], { display: 'none' });
-      RESET();
-    } });
+const AUDIO = {
+    cat: new Audio('./chaewon-caat.mp3'),
+    eww: new Audio('./chaewon-library_eww.mp3'),
+    fall: new Audio('./chaewon-library_fall.mp3'),
+    fear: new Audio('./chaewon-library_fear.mp3'),
+    hea: new Audio('./chaewon-library_heeeaa.mp3'),
+    hein: new Audio('./chaewon-library_heeeein.mp3'),
+    meh: new Audio('./chaewon-library_mehhhh.mp3'),
+    papan: new Audio('./chaewon-library_papann.mp3')
+    };
 
-   
-  
-  
-  for (let i = 1; i < CORDS.length; i++) {
-    CORD_TL.add(
-    to(CORDS[0], {
-      morphSVG: CORDS[i],
-      duration: CORD_DURATION,
-      repeat: 1,
-      yoyo: true }));
-  
-  
-  }
-  
-  Draggable.create(PROXY, {
-    trigger: HIT,
-    type: 'x,y',
-    onPress: e => {
-      startX = e.x;
-      startY = e.y;
-    },
-    onDrag: function () {
-      set(DUMMY_CORD, {
-        attr: {
-          x2: this.x,
-          y2: this.y } });
-  
-  
-    },
-    onRelease: function (e) {
-      const DISTX = Math.abs(e.x - startX);
-      const DISTY = Math.abs(e.y - startY);
-      const TRAVELLED = Math.sqrt(DISTX * DISTX + DISTY * DISTY);
-      to(DUMMY_CORD, {
-        attr: { x2: ENDX, y2: ENDY },
-        duration: CORD_DURATION,
-        onComplete: () => {
-          if (TRAVELLED > 50) {
-            CORD_TL.restart();
-          } else {
-            RESET();
-          }
-        } });
-  
-    } });
+    function play(soundName) {
+        if (AUDIO.hasOwnProperty(soundName)) {
+            AUDIO[soundName].play();
+        } else {
+            console.error('Sound not found:', soundName);
+        }
+    }
