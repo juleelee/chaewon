@@ -9,7 +9,8 @@ const AUDIO = {
     papan: new Audio('./chaewon-library_papann.mp3'),
     itgirl: new Audio('./it-girl.mp3'),
     panty: new Audio('./lesserafimpanty.mp3'),
-    dodok: new Audio('./dododok_dok.mp3')
+    dodok: new Audio('./dododok_dok.mp3'),
+    lemon: new Audio('./chaewon_easy_peasy.mp3')
 
     };
 
